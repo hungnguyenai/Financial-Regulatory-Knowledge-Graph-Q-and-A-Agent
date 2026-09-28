@@ -1,0 +1,35 @@
+# Agent Manifest — AgentRegistry entry point
+# This file is required for AgentRegistry auto-discovery (lazy-load architecture)
+
+id: "FIN-C2-182"
+name: "Financial Regulatory Knowledge Graph Q&A Agent"
+# Mirrors the value src/api/server.py passes to secrets_factory().
+namespace: "fin-c2-182"
+enabled: true
+version: "0.1.0"
+category: "Cat 2"
+industry: "FIN"
+
+# Node-backbone pattern (L2 retired) — base agent type reference
+base_type: "VectorRAGAgent"  # RAGAgent | ChatAgent | ReActAgent | DocGenerationAgent
+
+# Entry point
+class: "src.graph.graph.Graph"
+
+# Runtime configuration
+config:
+  max_retry: 3
+  timeout_seconds: 30
+  # kb_client: injected in production (template-owned versioned approved-corpus
+  # index, architect ruling 2026-07-16 Option A); absent -> deterministic
+  # fallback corpus in src/services/service.py.
+  kb_client: null
+  s3_gate_enabled: true
+
+# Security
+required_trust_level: "INTERNAL"
+
+# Dependencies the agent requires (registry compile-time validation).
+requires:
+  extras: []
+  secrets: []
